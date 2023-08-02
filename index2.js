@@ -1,14 +1,16 @@
-// const request = fetch('https://api.thedogapi.com/v1/breeds')
-// .then((response) => console.log(response.json()))
+return exerciseUtils.promisifiedReadFile('stanza-02.txt')
+    .then((content) => {
+      utils.blue(content);
+  return exerciseUtils.promisifiedReadFile('stanza-03.txt');
+    })
+    .then((content) => {
+      utils.blue(content);
+      utils.blue('done');
+    })
 
-// console.log(request);
 
-const promise = new Promise((resolve, reject) => {
-    if (23 === 23) {
-        resolve('Ecelente')
-    } else {
-        reject('eres estupido y casi quedas afuera')
-    }
-});
-
-console.log(promise);
+    const promiseB = new Promise((resolve, reject) => {
+        return exerciseUtils.promisifiedReadFile('stanza-04.txt')
+        .then((response) => utils.blue(response))
+        .hamdleError((error) => utils.magenta(new Error(error)))
+      })
