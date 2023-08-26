@@ -1,6 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
-
+const { User, Post } = require('../db');
+const { createUser } = require('./controller')
 const saludar = (req, res) => {
     try {
         res.status(200).send('Hola Logan')   
@@ -54,16 +55,19 @@ const getById = (req, res) => {
     }
 }
 
-const postUser = (req, res) => {
+const postUser = async (req, res) => {
     try {
-        const {nombre} = req.body;
-        res.status(200).send(`Agregando una nueva persona a la lista de nombre ${nombre}`)
+        const {name, email, phone, gender} = req.body;
+        const newUser = await User.createUser(name, email, phone, gender)
+        res.status(200).json(newUser);
         
     } catch (error) {
         res.status(400).json({error: error.message});
     }
     
 }
+
+
 
 const personal = async (req, res) => {
     try {
@@ -99,13 +103,13 @@ const personal = async (req, res) => {
 
 // asyncCall();
 
-function traducional() {
+function tradicional() {
     axios('https://jsonplaceholder.typicode.com/users/3')
     .then((response) => response.data)
     .then((data) => console.log('Promesa tradicional: ', data.name))
 }
 
-traducional();
+tradicional();
 
 
 async function conAsync() {

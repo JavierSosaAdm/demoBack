@@ -2,11 +2,22 @@ const express = require('express');
 const server = express();
 const morgan = require('morgan');
 const mainRouter = require('./routes/mainRouter');
+const { database } = require('./db');
+
+// force: true - ELIMINA TODAS LAS TABLAS DE LA BDD PREVIAMENTE CREADAS, Y LAS VUELVE A CREAR EN BASE A LOS MODELOS
+// alter: true - ACTUALIZA LAS TABLAS DE LA BDD A LOS MODELOS
 
 
-server.listen(3001, () => {
-    console.log('servidor levantado en puerto 3001');
-});
+database
+    .sync({ force: true })
+    .then((res) => { // si se sincronizó todo bien, recien ahi, mi successHandler va a escuchar el server en el puerto 
+        server.listen(3001, () => {
+            console.log('servidor levantado en puerto 3001');
+        });
+    })
+    .catch((err) => console.log(err.message));
+
+
 
 server.use(morgan('dev'));
 server.use(express.json());
